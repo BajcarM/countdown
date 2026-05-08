@@ -1,0 +1,281 @@
+:root {
+  --sky-1: #1a0a2e;
+  --sky-2: #3d1442;
+  --sky-3: #7a2a4e;
+  --sky-4: #c25168;
+  --sky-5: #e8896a;
+  --sky-6: #f5b271;
+  --sky-7: #fcd5a1;
+  --ocean: #1a0d2b;
+  --island: #160820;
+  --text: #fff5e6;
+  --accent: #ffe4b8;
+  --muted: rgba(255, 245, 230, 0.65);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  min-height: 100vh;
+}
+
+body {
+  font-family: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text);
+  background: linear-gradient(
+    180deg,
+    var(--sky-1) 0%,
+    var(--sky-2) 18%,
+    var(--sky-3) 38%,
+    var(--sky-4) 58%,
+    var(--sky-5) 74%,
+    var(--sky-6) 86%,
+    var(--sky-7) 100%
+  );
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------- scene ---------- */
+.scene {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.stars {
+  position: absolute;
+  inset: 0 0 40% 0;
+  background-image:
+    radial-gradient(1.2px 1.2px at 12% 18%, rgba(255, 255, 255, 0.9), transparent 60%),
+    radial-gradient(1px 1px at 28% 8%, rgba(255, 255, 255, 0.7), transparent 60%),
+    radial-gradient(1.5px 1.5px at 42% 22%, rgba(255, 255, 255, 1), transparent 60%),
+    radial-gradient(1px 1px at 55% 12%, rgba(255, 255, 255, 0.55), transparent 60%),
+    radial-gradient(1.2px 1.2px at 68% 6%, rgba(255, 255, 255, 0.85), transparent 60%),
+    radial-gradient(1px 1px at 78% 20%, rgba(255, 255, 255, 0.5), transparent 60%),
+    radial-gradient(1.4px 1.4px at 88% 14%, rgba(255, 255, 255, 0.95), transparent 60%),
+    radial-gradient(1px 1px at 4% 30%, rgba(255, 255, 255, 0.45), transparent 60%),
+    radial-gradient(1px 1px at 35% 32%, rgba(255, 255, 255, 0.5), transparent 60%),
+    radial-gradient(1px 1px at 62% 28%, rgba(255, 255, 255, 0.55), transparent 60%);
+  opacity: 0.85;
+  animation: twinkle 5s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.95; }
+}
+
+.sun {
+  position: absolute;
+  bottom: 14%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    #fff8e0 0%,
+    #ffe1a8 35%,
+    #ffb87a 65%,
+    rgba(255, 184, 122, 0) 80%
+  );
+  filter: blur(0.5px);
+  animation: sunBreathe 9s ease-in-out infinite;
+}
+
+.sun-glow {
+  position: absolute;
+  bottom: 4%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 220, 160, 0.45) 0%,
+    rgba(255, 180, 130, 0.25) 25%,
+    rgba(255, 150, 110, 0.1) 45%,
+    transparent 65%
+  );
+  filter: blur(8px);
+  animation: sunBreathe 9s ease-in-out infinite;
+}
+
+@keyframes sunBreathe {
+  0%, 100% { opacity: 0.92; transform: translateX(-50%) scale(1); }
+  50% { opacity: 1; transform: translateX(-50%) scale(1.04); }
+}
+
+.horizon {
+  position: absolute;
+  bottom: 14%;
+  left: 0;
+  width: 100%;
+  height: 18vh;
+  min-height: 130px;
+  display: block;
+}
+.horizon path {
+  fill: var(--island);
+  opacity: 0.92;
+}
+
+.ocean {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 14%;
+  background: linear-gradient(
+    180deg,
+    #1a0d2b 0%,
+    #0f0618 100%
+  );
+}
+.ocean::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 200, 140, 0.18) 0%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+/* ---------- content ---------- */
+.content {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 4rem 1.5rem 18vh;
+  animation: fadeUp 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.eyebrow {
+  font-size: 0.78rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 2.5rem;
+  opacity: 0.85;
+  font-weight: 300;
+}
+
+.headline {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(2.6rem, 7.5vw, 5.5rem);
+  line-height: 1.05;
+  margin-bottom: 3.5rem;
+  letter-spacing: -0.01em;
+  text-shadow: 0 2px 30px rgba(40, 10, 30, 0.25);
+}
+
+.headline .name {
+  display: block;
+  margin-top: 0.2em;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+  font-size: 1.15em;
+}
+
+.countdown {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: clamp(0.6rem, 2vw, 1.4rem);
+  margin-bottom: 3rem;
+}
+
+.unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 64px;
+}
+
+.value {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(2.6rem, 6.5vw, 4.5rem);
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.label {
+  font-size: 0.7rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  margin-top: 0.7rem;
+  opacity: 0.72;
+  font-weight: 300;
+}
+
+.sep {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  opacity: 0.4;
+  font-weight: 300;
+  align-self: flex-start;
+  margin-top: 0.4em;
+}
+
+.footnote {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+  opacity: 0.78;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+
+/* hide separators on small screens to keep tidy stacking */
+@media (max-width: 520px) {
+  .sep { display: none; }
+  .countdown {
+    gap: 1rem 1.4rem;
+    max-width: 320px;
+  }
+  .unit { min-width: 70px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stars,
+  .sun,
+  .sun-glow,
+  .content {
+    animation: none !important;
+  }
+}
