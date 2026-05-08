@@ -22,6 +22,7 @@
 html,
 body {
   min-height: 100vh;
+  min-height: 100svh;
 }
 
 body {
@@ -98,17 +99,17 @@ body {
 
 .sun-glow {
   position: absolute;
-  bottom: 4%;
+  bottom: 2%;
   left: 50%;
   transform: translateX(-50%);
-  width: 700px;
-  height: 700px;
+  width: 520px;
+  height: 520px;
   border-radius: 50%;
   background: radial-gradient(
     circle at center,
-    rgba(255, 220, 160, 0.45) 0%,
-    rgba(255, 180, 130, 0.25) 25%,
-    rgba(255, 150, 110, 0.1) 45%,
+    rgba(255, 220, 160, 0.32) 0%,
+    rgba(255, 180, 130, 0.16) 25%,
+    rgba(255, 150, 110, 0.06) 45%,
     transparent 65%
   );
   filter: blur(8px);
@@ -166,6 +167,7 @@ body {
   position: relative;
   z-index: 2;
   min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -197,7 +199,9 @@ body {
   line-height: 1.05;
   margin-bottom: 3.5rem;
   letter-spacing: -0.01em;
-  text-shadow: 0 2px 30px rgba(40, 10, 30, 0.25);
+  text-shadow:
+    0 2px 8px rgba(30, 8, 24, 0.45),
+    0 6px 30px rgba(30, 8, 24, 0.35);
 }
 
 .headline .name {
@@ -232,6 +236,10 @@ body {
   font-variant-numeric: tabular-nums;
   line-height: 1;
   letter-spacing: 0.02em;
+  text-shadow:
+    0 1px 2px rgba(20, 4, 18, 0.55),
+    0 4px 14px rgba(20, 4, 18, 0.5),
+    0 0 28px rgba(20, 4, 18, 0.3);
 }
 
 .label {
@@ -239,8 +247,9 @@ body {
   letter-spacing: 0.28em;
   text-transform: uppercase;
   margin-top: 0.7rem;
-  opacity: 0.72;
-  font-weight: 300;
+  opacity: 0.85;
+  font-weight: 400;
+  text-shadow: 0 1px 4px rgba(20, 4, 18, 0.6);
 }
 
 .sep {
@@ -261,7 +270,84 @@ body {
   letter-spacing: 0.02em;
 }
 
-/* hide separators on small screens to keep tidy stacking */
+/* ---------- audio toggle ---------- */
+.audio-toggle {
+  position: fixed;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  z-index: 10;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 245, 230, 0.28);
+  background: rgba(20, 8, 24, 0.42);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 0.3s ease, transform 0.2s ease, background 0.2s ease;
+  padding: 0;
+}
+.audio-toggle:hover { opacity: 1; transform: scale(1.06); }
+.audio-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.audio-toggle:disabled { opacity: 0.25; cursor: default; }
+.audio-toggle .icon { width: 18px; height: 18px; display: block; }
+.audio-toggle .icon-pause { display: none; }
+.audio-toggle.playing { opacity: 0.9; }
+.audio-toggle.playing .icon-play { display: none; }
+.audio-toggle.playing .icon-pause { display: block; }
+
+.audio-pulse {
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 228, 184, 0.5);
+  opacity: 0;
+  pointer-events: none;
+}
+.audio-toggle.playing .audio-pulse {
+  animation: audioPulse 2.6s ease-out infinite;
+}
+@keyframes audioPulse {
+  0% { opacity: 0.65; transform: scale(0.95); }
+  80% { opacity: 0; transform: scale(1.5); }
+  100% { opacity: 0; transform: scale(1.5); }
+}
+
+/* hidden YouTube iframe — kept off-screen so audio plays without showing video */
+#ytplayer {
+  position: fixed;
+  left: -9999px;
+  top: -9999px;
+  width: 320px;
+  height: 240px;
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 760px) {
+  .sun {
+    width: 170px;
+    height: 170px;
+  }
+  .sun-glow {
+    width: 380px;
+    height: 380px;
+  }
+  .horizon {
+    height: 14vh;
+    min-height: 100px;
+  }
+}
+
 @media (max-width: 520px) {
   .sep { display: none; }
   .countdown {
@@ -269,13 +355,48 @@ body {
     max-width: 320px;
   }
   .unit { min-width: 70px; }
+  .content {
+    padding: 3rem 1.25rem 16vh;
+  }
+  .eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    margin-bottom: 1.75rem;
+  }
+  .headline {
+    margin-bottom: 2.5rem;
+  }
+  .sun {
+    width: 140px;
+    height: 140px;
+    bottom: 16%;
+  }
+  .sun-glow {
+    width: 300px;
+    height: 300px;
+    bottom: 4%;
+  }
+  .audio-toggle {
+    bottom: 1rem;
+    right: 1rem;
+    width: 44px;
+    height: 44px;
+  }
+}
+
+@media (max-width: 360px) {
+  .sun { width: 120px; height: 120px; }
+  .sun-glow { width: 260px; height: 260px; }
+  .countdown { gap: 0.75rem 1rem; max-width: 280px; }
+  .unit { min-width: 60px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .stars,
   .sun,
   .sun-glow,
-  .content {
+  .content,
+  .audio-pulse {
     animation: none !important;
   }
 }

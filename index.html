@@ -58,6 +58,18 @@
     <p class="footnote" id="footnote">soon, the Atlantic and you</p>
   </main>
 
+  <button id="audio-toggle" class="audio-toggle" type="button" aria-label="Play music" disabled>
+    <svg class="icon icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 3v10.55a4 4 0 1 0 2 3.45V7h4V3h-6z"/>
+    </svg>
+    <svg class="icon icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M6 5h4v14H6zM14 5h4v14h-4z"/>
+    </svg>
+    <span class="audio-pulse" aria-hidden="true"></span>
+  </button>
+  <div id="ytplayer" aria-hidden="true"></div>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
   <script src="script.js"></script>
 </body>
 </html>
