@@ -13,9 +13,14 @@
   --text: #fff5e6;
   --accent: #ffe4b8;
   --muted: rgba(255, 245, 230, 0.65);
+  --shadow: rgba(20, 4, 18, 0.55);
   --sun-opacity: 1;
   --sun-glow-opacity: 1;
   --stars-opacity: 0.85;
+}
+
+body {
+  transition: color 1.5s ease;
 }
 
 * {
@@ -204,8 +209,10 @@ body {
   text-transform: uppercase;
   color: var(--accent);
   margin-bottom: 2.5rem;
-  opacity: 0.85;
-  font-weight: 300;
+  opacity: 0.9;
+  font-weight: 400;
+  text-shadow: 0 1px 4px var(--shadow);
+  transition: color 1.5s ease, text-shadow 1.5s ease;
 }
 
 .headline {
@@ -216,8 +223,9 @@ body {
   margin-bottom: 3.5rem;
   letter-spacing: -0.01em;
   text-shadow:
-    0 2px 8px rgba(30, 8, 24, 0.45),
-    0 6px 30px rgba(30, 8, 24, 0.35);
+    0 2px 8px var(--shadow),
+    0 6px 30px var(--shadow);
+  transition: text-shadow 1.5s ease;
 }
 
 .headline .name {
@@ -253,9 +261,10 @@ body {
   line-height: 1;
   letter-spacing: 0.02em;
   text-shadow:
-    0 1px 2px rgba(20, 4, 18, 0.55),
-    0 4px 14px rgba(20, 4, 18, 0.5),
-    0 0 28px rgba(20, 4, 18, 0.3);
+    0 1px 2px var(--shadow),
+    0 4px 14px var(--shadow),
+    0 0 28px var(--shadow);
+  transition: text-shadow 1.5s ease;
 }
 
 .label {
@@ -263,9 +272,10 @@ body {
   letter-spacing: 0.28em;
   text-transform: uppercase;
   margin-top: 0.7rem;
-  opacity: 0.85;
+  opacity: 0.9;
   font-weight: 400;
-  text-shadow: 0 1px 4px rgba(20, 4, 18, 0.6);
+  text-shadow: 0 1px 4px var(--shadow);
+  transition: text-shadow 1.5s ease;
 }
 
 .sep {
