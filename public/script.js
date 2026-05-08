@@ -38,3 +38,57 @@ function tick() {
 
 tick();
 setInterval(tick, 1000);
+
+// ---------- ambient music (YouTube IFrame API) ----------
+const VIDEO_ID = "H-oAQY0K-PA";
+const START_AT = 5418;
+
+const toggleBtn = document.getElementById("audio-toggle");
+let ytPlayer = null;
+let isPlaying = false;
+
+window.onYouTubeIframeAPIReady = function () {
+  ytPlayer = new YT.Player("ytplayer", {
+    videoId: VIDEO_ID,
+    playerVars: {
+      controls: 0,
+      disablekb: 1,
+      fs: 0,
+      loop: 1,
+      playlist: VIDEO_ID,
+      start: START_AT,
+      modestbranding: 1,
+      rel: 0,
+      iv_load_policy: 3,
+      playsinline: 1,
+    },
+    events: {
+      onReady: () => {
+        toggleBtn.disabled = false;
+      },
+      onStateChange: (e) => {
+        if (e.data === YT.PlayerState.PLAYING) {
+          isPlaying = true;
+          toggleBtn.classList.add("playing");
+          toggleBtn.setAttribute("aria-label", "Pause music");
+        } else if (
+          e.data === YT.PlayerState.PAUSED ||
+          e.data === YT.PlayerState.ENDED
+        ) {
+          isPlaying = false;
+          toggleBtn.classList.remove("playing");
+          toggleBtn.setAttribute("aria-label", "Play music");
+        }
+      },
+    },
+  });
+};
+
+toggleBtn.addEventListener("click", () => {
+  if (!ytPlayer || typeof ytPlayer.playVideo !== "function") return;
+  if (isPlaying) {
+    ytPlayer.pauseVideo();
+  } else {
+    ytPlayer.playVideo();
+  }
+});
