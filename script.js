@@ -93,10 +93,11 @@ window.onYouTubeIframeAPIReady = function () {
           isPlaying = true;
           toggleBtn.classList.add("playing");
           toggleBtn.setAttribute("aria-label", "Pause music");
-        } else if (
-          e.data === YT.PlayerState.PAUSED ||
-          e.data === YT.PlayerState.ENDED
-        ) {
+        } else if (e.data === YT.PlayerState.ENDED) {
+          // explicit loop back to the shared timestamp
+          e.target.seekTo(START_AT, true);
+          e.target.playVideo();
+        } else if (e.data === YT.PlayerState.PAUSED) {
           isPlaying = false;
           toggleBtn.classList.remove("playing");
           toggleBtn.setAttribute("aria-label", "Play music");
