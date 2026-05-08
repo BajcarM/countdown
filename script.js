@@ -21,7 +21,7 @@ function tick() {
     els.minutes.textContent = "00";
     els.seconds.textContent = "00";
     els.headline.innerHTML = 'Hola, <span class="name">Summer</span>';
-    els.footnote.textContent = "the Atlantic, and you";
+    els.footnote.textContent = "And here you are.";
     return;
   }
 
