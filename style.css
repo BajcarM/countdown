@@ -273,7 +273,7 @@ body {
 /* ---------- audio toggle ---------- */
 .audio-toggle {
   position: fixed;
-  bottom: 1.25rem;
+  top: 1.25rem;
   right: 1.25rem;
   z-index: 10;
   width: 48px;
@@ -377,7 +377,7 @@ body {
     bottom: 4%;
   }
   .audio-toggle {
-    bottom: 1rem;
+    top: 1rem;
     right: 1rem;
     width: 44px;
     height: 44px;

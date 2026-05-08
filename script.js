@@ -47,10 +47,31 @@ const toggleBtn = document.getElementById("audio-toggle");
 let ytPlayer = null;
 let isPlaying = false;
 
+let audioUnlocked = false;
+
+function unlockAudio() {
+  if (audioUnlocked || !ytPlayer || typeof ytPlayer.unMute !== "function") return;
+  ytPlayer.unMute();
+  if (typeof ytPlayer.setVolume === "function") ytPlayer.setVolume(70);
+  ytPlayer.playVideo();
+  audioUnlocked = true;
+  document.removeEventListener("pointerdown", unlockAudio);
+  document.removeEventListener("keydown", unlockAudio);
+  document.removeEventListener("touchstart", unlockAudio);
+  document.removeEventListener("scroll", unlockAudio);
+}
+
+document.addEventListener("pointerdown", unlockAudio);
+document.addEventListener("keydown", unlockAudio);
+document.addEventListener("touchstart", unlockAudio, { passive: true });
+document.addEventListener("scroll", unlockAudio, { passive: true });
+
 window.onYouTubeIframeAPIReady = function () {
   ytPlayer = new YT.Player("ytplayer", {
     videoId: VIDEO_ID,
     playerVars: {
+      autoplay: 1,
+      mute: 1,
       controls: 0,
       disablekb: 1,
       fs: 0,
@@ -63,8 +84,9 @@ window.onYouTubeIframeAPIReady = function () {
       playsinline: 1,
     },
     events: {
-      onReady: () => {
+      onReady: (e) => {
         toggleBtn.disabled = false;
+        try { e.target.playVideo(); } catch (_) {}
       },
       onStateChange: (e) => {
         if (e.data === YT.PlayerState.PLAYING) {
@@ -86,6 +108,7 @@ window.onYouTubeIframeAPIReady = function () {
 
 toggleBtn.addEventListener("click", () => {
   if (!ytPlayer || typeof ytPlayer.playVideo !== "function") return;
+  if (!audioUnlocked) unlockAudio();
   if (isPlaying) {
     ytPlayer.pauseVideo();
   } else {
