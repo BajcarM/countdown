@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Until Summer</title>
+  <meta name="description" content="A countdown to the Canary Islands." />
+  <meta name="theme-color" content="#2a1438" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="scene" aria-hidden="true">
+    <div class="stars"></div>
+    <div class="sun"></div>
+    <div class="sun-glow"></div>
+    <svg class="horizon" viewBox="0 0 1440 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,220 L0,150 C 120,120 200,80 320,95 C 430,108 500,150 620,140 C 720,132 780,90 880,100 C 980,110 1040,160 1160,150 C 1270,140 1340,110 1440,130 L1440,220 Z" />
+    </svg>
+    <div class="ocean"></div>
+  </div>
+
+  <main class="content">
+    <p class="eyebrow">Canary Islands &nbsp;·&nbsp; 13 May &nbsp;·&nbsp; 9 PM</p>
+
+    <h1 class="headline">
+      Until I see you,
+      <span class="name">Summer</span>
+    </h1>
+
+    <div class="countdown" id="countdown" role="timer" aria-live="polite">
+      <div class="unit">
+        <span class="value" id="days">--</span>
+        <span class="label">days</span>
+      </div>
+      <span class="sep">·</span>
+      <div class="unit">
+        <span class="value" id="hours">--</span>
+        <span class="label">hours</span>
+      </div>
+      <span class="sep">·</span>
+      <div class="unit">
+        <span class="value" id="minutes">--</span>
+        <span class="label">minutes</span>
+      </div>
+      <span class="sep">·</span>
+      <div class="unit">
+        <span class="value" id="seconds">--</span>
+        <span class="label">seconds</span>
+      </div>
+    </div>
+
+    <p class="footnote" id="footnote">soon, the Atlantic and you</p>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
