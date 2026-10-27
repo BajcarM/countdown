@@ -6,6 +6,7 @@
   <title>Until Summer</title>
   <meta name="description" content="A countdown to the Canary Islands." />
   <meta name="theme-color" content="#2a1438" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23ffc781'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23fff1cf'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -16,17 +17,76 @@
 </head>
 <body>
   <div class="scene" aria-hidden="true">
-    <div class="stars"></div>
+    <div class="stars" id="stars">
+      <span class="star-layer sl1"></span>
+      <span class="star-layer sl2"></span>
+      <span class="star-layer sl3"></span>
+    </div>
     <div class="sun"></div>
     <div class="sun-glow"></div>
+    <div class="clouds" aria-hidden="true">
+      <div class="cloud c1">
+        <span class="puff p1"></span>
+        <span class="puff p2"></span>
+        <span class="puff p3"></span>
+        <span class="puff base"></span>
+      </div>
+      <div class="cloud c2">
+        <span class="puff p1"></span>
+        <span class="puff p2"></span>
+        <span class="puff p3"></span>
+        <span class="puff base"></span>
+      </div>
+    </div>
     <svg class="horizon" viewBox="0 0 1440 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="islandFill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#241036" stop-opacity="0.93" />
+          <stop offset="55%" stop-color="#180925" stop-opacity="0.97" />
+          <stop offset="100%" stop-color="#0d0418" stop-opacity="1" />
+        </linearGradient>
+      </defs>
       <path d="M0,220 L0,150 C 120,120 200,80 320,95 C 430,108 500,150 620,140 C 720,132 780,90 880,100 C 980,110 1040,160 1160,150 C 1270,140 1340,110 1440,130 L1440,220 Z" />
     </svg>
+    <div class="flock" id="flock" aria-hidden="true">
+      <span class="bird b1">
+        <svg viewBox="0 0 24 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+          <path class="w wl" d="M12 7C9.2 2.6 6.4 2.2 2 4.6" />
+          <path class="w wr" d="M12 7c2.8-4.4 5.6-4.8 10-2.4" />
+        </svg>
+      </span>
+      <span class="bird b2">
+        <svg viewBox="0 0 24 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+          <path class="w wl" d="M12 7C9.2 2.6 6.4 2.2 2 4.6" />
+          <path class="w wr" d="M12 7c2.8-4.4 5.6-4.8 10-2.4" />
+        </svg>
+      </span>
+      <span class="bird b3">
+        <svg viewBox="0 0 24 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+          <path class="w wl" d="M12 7C9.2 2.6 6.4 2.2 2 4.6" />
+          <path class="w wr" d="M12 7c2.8-4.4 5.6-4.8 10-2.4" />
+        </svg>
+      </span>
+      <span class="bird b4">
+        <svg viewBox="0 0 24 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+          <path class="w wl" d="M12 7C9.2 2.6 6.4 2.2 2 4.6" />
+          <path class="w wr" d="M12 7c2.8-4.4 5.6-4.8 10-2.4" />
+        </svg>
+      </span>
+      <span class="bird b5">
+        <svg viewBox="0 0 24 12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+          <path class="w wl" d="M12 7C9.2 2.6 6.4 2.2 2 4.6" />
+          <path class="w wr" d="M12 7c2.8-4.4 5.6-4.8 10-2.4" />
+        </svg>
+      </span>
+    </div>
     <div class="ocean"></div>
   </div>
 
   <main class="content">
-    <p class="eyebrow">Canary Islands &nbsp;·&nbsp; 28 Nov &nbsp;·&nbsp; 6:35 PM</p>
+    <p class="eyebrow">
+      <span class="eyebrow-line"><span class="bit">Canary Islands&nbsp;·</span> <span class="bit">28 Nov&nbsp;·</span> <span class="bit">6:35 PM</span></span>
+    </p>
 
     <h1 class="headline">
       Until I see you,
