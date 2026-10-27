@@ -74,13 +74,13 @@ const palettes = {
   },
   dawn: {
     sky: ["#180c30", "#321648", "#5d2452", "#8a3e5b", "#b95e62", "#dd8472", "#f5af8a"],
-    sun: 0, glow: 0.3, stars: 0.5, clouds: 0,
+    sun: 0, glow: 0.3, stars: 0.72, clouds: 0,
     oceanTop: "#150b25", oceanBot: "#080418", oceanShimmer: "rgba(220, 130, 100, 0.12)",
     ...LIGHT_TEXT,
   },
   sunrise: {
     sky: ["#1c0e35", "#3e1948", "#7a2e58", "#bd5468", "#e88471", "#f6ab78", "#ffd4a4"],
-    sun: 1, glow: 0.85, stars: 0.1, clouds: 0,
+    sun: 1, glow: 0.85, stars: 0.28, clouds: 0,
     oceanTop: "#1a0d2b", oceanBot: "#0f0618", oceanShimmer: "rgba(255, 180, 120, 0.18)",
     ...LIGHT_TEXT,
   },
@@ -104,13 +104,13 @@ const palettes = {
   },
   sunset: {
     sky: ["#1a0a2e", "#3d1442", "#7a2a4e", "#c25168", "#e8896a", "#f5b271", "#fcd5a1"],
-    sun: 1, glow: 1, stars: 0.55, clouds: 0,
+    sun: 1, glow: 1, stars: 0.72, clouds: 0,
     oceanTop: "#1a0d2b", oceanBot: "#0f0618", oceanShimmer: "rgba(255, 200, 140, 0.18)",
     ...LIGHT_TEXT,
   },
   dusk: {
     sky: ["#0a072a", "#190d3e", "#321648", "#562247", "#7c3548", "#985046", "#b07854"],
-    sun: 0.35, glow: 0.4, stars: 0.8, clouds: 0,
+    sun: 0.35, glow: 0.4, stars: 0.95, clouds: 0,
     oceanTop: "#100a28", oceanBot: "#060418", oceanShimmer: "rgba(220, 140, 110, 0.1)",
     ...LIGHT_TEXT,
   },
@@ -169,8 +169,20 @@ function sendFlock(force = false) {
   void flock.offsetWidth; // restart the animation cleanly
 
   flock.style.top = `${rand(12, 44).toFixed(1)}%`;
-  flock.style.setProperty("--flight-time", `${rand(26, 44).toFixed(1)}s`);
   if (Math.random() < 0.4) flock.classList.add("reverse");
+
+  if (force) {
+    // asked for by hand: come in close to the edge and cross briskly,
+    // so something happens within a second of the click
+    flock.style.setProperty("--flight-time", `${rand(14, 19).toFixed(1)}s`);
+    flock.style.setProperty("--from", "-6vw");
+    flock.style.setProperty("--from-rev", "104vw");
+  } else {
+    flock.style.setProperty("--flight-time", `${rand(26, 44).toFixed(1)}s`);
+    flock.style.removeProperty("--from");
+    flock.style.removeProperty("--from-rev");
+  }
+
   flock.classList.add("flying");
 }
 
@@ -187,22 +199,43 @@ if (flock) {
   setTimeout(sendFlock, rand(6_000, 15_000));
 }
 
-// ---------- a few stars that flare on their own ----------
+// ---------- the star field ----------
 const starsEl = document.getElementById("stars");
 
-if (starsEl && !prefersCalm.matches) {
-  for (let i = 0; i < 9; i++) {
-    const spark = document.createElement("span");
-    const size = rand(1.6, 2.8).toFixed(1);
-    spark.className = "spark";
-    spark.style.width = `${size}px`;
-    spark.style.height = `${size}px`;
-    spark.style.left = `${rand(3, 97).toFixed(1)}%`;
-    spark.style.top = `${rand(2, 58).toFixed(1)}%`;
-    spark.style.setProperty("--spark-time", `${rand(5, 13).toFixed(1)}s`);
-    spark.style.setProperty("--spark-delay", `-${rand(0, 12).toFixed(1)}s`);
-    starsEl.appendChild(spark);
+if (starsEl) {
+  const STARS = 110;
+  const TWINKLERS = 16;
+
+  for (let i = 0; i < STARS; i++) {
+    const star = document.createElement("span");
+    // a few big ones, mostly small — that is what makes a field read as sky
+    const size = Math.random() < 0.16 ? rand(1.9, 2.9) : rand(0.9, 1.7);
+    const base = rand(0.45, 1);
+
+    star.className = size > 1.8 ? "star bright" : "star";
+    star.style.width = `${size.toFixed(1)}px`;
+    star.style.height = `${size.toFixed(1)}px`;
+    star.style.left = `${rand(0, 100).toFixed(2)}%`;
+    star.style.top = `${rand(0, 100).toFixed(2)}%`;
+    star.style.setProperty("--o1", base.toFixed(2));
+    star.style.setProperty("--o2", Math.min(1, base * rand(1.3, 2)).toFixed(2));
+    star.style.setProperty("--t", `${rand(3.5, 9).toFixed(1)}s`);
+    star.style.setProperty("--d", `-${rand(0, 9).toFixed(1)}s`);
+    starsEl.appendChild(star);
   }
+
+  // promote some of the brighter ones to sparkle
+  const bright = [...starsEl.querySelectorAll(".star.bright")];
+  for (let i = bright.length - 1; i > 0; i--) {
+    const k = Math.floor(Math.random() * (i + 1));
+    [bright[i], bright[k]] = [bright[k], bright[i]];
+  }
+  bright.slice(0, TWINKLERS).forEach((star) => {
+    star.classList.add("twinkler");
+    star.style.setProperty("--burst", `${rand(9, 19).toFixed(0)}px`);
+    star.style.setProperty("--bt", `${rand(6, 15).toFixed(1)}s`);
+    star.style.setProperty("--bd", `-${rand(0, 15).toFixed(1)}s`);
+  });
 }
 
 // ---------- clouds, only while it is light out ----------
@@ -217,8 +250,16 @@ function sendCloud(cloud, force = false) {
 
   cloud.style.top = `${rand(5, 30).toFixed(1)}%`;
   cloud.style.scale = rand(0.7, 1.35).toFixed(2);
-  cloud.style.setProperty("--drift-time", `${rand(95, 190).toFixed(0)}s`);
   cloud.style.setProperty("--cloud-opacity", rand(0.3, 0.58).toFixed(2));
+
+  if (force) {
+    cloud.style.setProperty("--drift-time", `${rand(26, 38).toFixed(0)}s`);
+    cloud.style.setProperty("--from", "-10vw");
+  } else {
+    cloud.style.setProperty("--drift-time", `${rand(95, 190).toFixed(0)}s`);
+    cloud.style.removeProperty("--from");
+  }
+
   cloud.classList.add("drifting");
 }
 
