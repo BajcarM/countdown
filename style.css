@@ -371,7 +371,7 @@ body {
   height: 100%;
   display: block;
   opacity: var(--glint-opacity, 1);
-  filter: blur(1.4px);
+  filter: blur(2.6px);
   transform: translateX(var(--glint-x, 0%));
   pointer-events: none;
 }
@@ -382,8 +382,8 @@ body {
 }
 
 @keyframes glitter {
-  0%, 100% { opacity: 0.05; transform: scaleX(0.75); }
-  50% { opacity: 0.75; transform: scaleX(1.1); }
+  0%, 100% { opacity: 0.03; transform: scaleX(0.9); }
+  50% { opacity: 0.3; transform: scaleX(1.06); }
 }
 
 /* the sun's path across the water */
