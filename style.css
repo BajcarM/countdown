@@ -1,26 +1,48 @@
+/* ---------- animatable custom properties (smooth phase blending) ---------- */
+@property --sky-1 { syntax: "<color>"; inherits: true; initial-value: #1a0a2e; }
+@property --sky-2 { syntax: "<color>"; inherits: true; initial-value: #3d1442; }
+@property --sky-3 { syntax: "<color>"; inherits: true; initial-value: #7a2a4e; }
+@property --sky-4 { syntax: "<color>"; inherits: true; initial-value: #c25168; }
+@property --sky-5 { syntax: "<color>"; inherits: true; initial-value: #e8896a; }
+@property --sky-6 { syntax: "<color>"; inherits: true; initial-value: #f5b271; }
+@property --sky-7 { syntax: "<color>"; inherits: true; initial-value: #fcd5a1; }
+@property --ocean-top { syntax: "<color>"; inherits: true; initial-value: #1a0d2b; }
+@property --ocean-bot { syntax: "<color>"; inherits: true; initial-value: #0f0618; }
+@property --text { syntax: "<color>"; inherits: true; initial-value: #fff5e6; }
+@property --accent { syntax: "<color>"; inherits: true; initial-value: #ffe4b8; }
+@property --shadow { syntax: "<color>"; inherits: true; initial-value: rgba(20, 4, 18, 0.55); }
+@property --scrim { syntax: "<color>"; inherits: true; initial-value: rgba(10, 2, 16, 0.34); }
+@property --panel { syntax: "<color>"; inherits: true; initial-value: rgba(255, 245, 230, 0.07); }
+@property --hairline { syntax: "<color>"; inherits: true; initial-value: rgba(255, 245, 230, 0.18); }
+@property --bird { syntax: "<color>"; inherits: true; initial-value: rgba(255, 244, 228, 0.62); }
+@property --sun-opacity { syntax: "<number>"; inherits: true; initial-value: 1; }
+@property --sun-glow-opacity { syntax: "<number>"; inherits: true; initial-value: 1; }
+@property --stars-opacity { syntax: "<number>"; inherits: true; initial-value: 0.85; }
+
 :root {
-  --sky-1: #1a0a2e;
-  --sky-2: #3d1442;
-  --sky-3: #7a2a4e;
-  --sky-4: #c25168;
-  --sky-5: #e8896a;
-  --sky-6: #f5b271;
-  --sky-7: #fcd5a1;
-  --ocean-top: #1a0d2b;
-  --ocean-bot: #0f0618;
   --ocean-shimmer: rgba(255, 200, 140, 0.18);
-  --island: #160820;
-  --text: #fff5e6;
-  --accent: #ffe4b8;
-  --muted: rgba(255, 245, 230, 0.65);
-  --shadow: rgba(20, 4, 18, 0.55);
-  --sun-opacity: 1;
-  --sun-glow-opacity: 1;
-  --stars-opacity: 0.85;
+
+  /* vertical rhythm */
+  --space-xs: clamp(0.5rem, 1vw, 0.75rem);
+  --space-sm: clamp(1rem, 2vw, 1.5rem);
+  --space-md: clamp(1.75rem, 3.4vw, 2.75rem);
+  --space-lg: clamp(2.25rem, 4.6vw, 3.5rem);
+
+  --lift: 0 1px 2px var(--shadow), 0 8px 26px var(--shadow);
+  --ease: cubic-bezier(0.22, 0.68, 0.24, 1);
+  --phase-fade: 2.4s ease;
 }
 
-body {
-  transition: color 1.5s ease;
+/* phase colours cross-fade instead of snapping */
+html {
+  transition:
+    --sky-1 var(--phase-fade), --sky-2 var(--phase-fade), --sky-3 var(--phase-fade),
+    --sky-4 var(--phase-fade), --sky-5 var(--phase-fade), --sky-6 var(--phase-fade),
+    --sky-7 var(--phase-fade), --ocean-top var(--phase-fade), --ocean-bot var(--phase-fade),
+    --text var(--phase-fade), --accent var(--phase-fade), --shadow var(--phase-fade),
+    --scrim var(--phase-fade), --panel var(--phase-fade), --hairline var(--phase-fade),
+    --bird var(--phase-fade), --sun-opacity var(--phase-fade),
+    --sun-glow-opacity var(--phase-fade), --stars-opacity var(--phase-fade);
 }
 
 * {
@@ -65,42 +87,137 @@ body {
   overflow: hidden;
 }
 
+/* soft scrim that keeps type legible against every sky */
+.scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 78% 54% at 50% 36%,
+    var(--scrim) 0%,
+    transparent 72%
+  );
+}
+
 .stars {
   position: absolute;
   inset: 0 0 35% 0;
-  background-image:
-    radial-gradient(1.2px 1.2px at 12% 18%, rgba(255, 255, 255, 0.9), transparent 60%),
-    radial-gradient(1px 1px at 28% 8%, rgba(255, 255, 255, 0.7), transparent 60%),
-    radial-gradient(1.5px 1.5px at 42% 22%, rgba(255, 255, 255, 1), transparent 60%),
-    radial-gradient(1px 1px at 55% 12%, rgba(255, 255, 255, 0.55), transparent 60%),
-    radial-gradient(1.2px 1.2px at 68% 6%, rgba(255, 255, 255, 0.85), transparent 60%),
-    radial-gradient(1px 1px at 78% 20%, rgba(255, 255, 255, 0.5), transparent 60%),
-    radial-gradient(1.4px 1.4px at 88% 14%, rgba(255, 255, 255, 0.95), transparent 60%),
-    radial-gradient(1px 1px at 4% 30%, rgba(255, 255, 255, 0.45), transparent 60%),
-    radial-gradient(1px 1px at 35% 32%, rgba(255, 255, 255, 0.5), transparent 60%),
-    radial-gradient(1px 1px at 62% 28%, rgba(255, 255, 255, 0.55), transparent 60%),
-    radial-gradient(1.3px 1.3px at 18% 42%, rgba(255, 255, 255, 0.7), transparent 60%),
-    radial-gradient(1px 1px at 48% 48%, rgba(255, 255, 255, 0.5), transparent 60%),
-    radial-gradient(1.4px 1.4px at 72% 38%, rgba(255, 255, 255, 0.85), transparent 60%),
-    radial-gradient(1px 1px at 92% 50%, rgba(255, 255, 255, 0.6), transparent 60%),
-    radial-gradient(1px 1px at 8% 56%, rgba(255, 255, 255, 0.4), transparent 60%);
   opacity: var(--stars-opacity, 0.85);
-  transition: opacity 2s ease;
-  animation: twinkle 5s ease-in-out infinite;
 }
 
-@keyframes twinkle {
-  0%, 100% { filter: brightness(0.7); }
-  50% { filter: brightness(1.1); }
+/* three layers so the sky breathes unevenly instead of pulsing as one sheet */
+.star-layer {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.sl1 {
+  background-image:
+    radial-gradient(1.3px 1.3px at 12% 18%, rgba(255, 255, 255, 0.95), transparent 60%),
+    radial-gradient(1.5px 1.5px at 42% 22%, rgba(255, 255, 255, 1), transparent 60%),
+    radial-gradient(1.2px 1.2px at 68% 6%, rgba(255, 255, 255, 0.85), transparent 60%),
+    radial-gradient(1.4px 1.4px at 88% 14%, rgba(255, 255, 255, 0.95), transparent 60%),
+    radial-gradient(1.4px 1.4px at 72% 38%, rgba(255, 255, 255, 0.85), transparent 60%);
+  animation: twinkleA 5.5s ease-in-out infinite;
+}
+
+.sl2 {
+  background-image:
+    radial-gradient(1px 1px at 28% 8%, rgba(255, 255, 255, 0.75), transparent 60%),
+    radial-gradient(1px 1px at 55% 12%, rgba(255, 255, 255, 0.6), transparent 60%),
+    radial-gradient(1px 1px at 78% 20%, rgba(255, 255, 255, 0.55), transparent 60%),
+    radial-gradient(1px 1px at 35% 32%, rgba(255, 255, 255, 0.55), transparent 60%),
+    radial-gradient(1.3px 1.3px at 18% 42%, rgba(255, 255, 255, 0.75), transparent 60%);
+  animation: twinkleB 8.5s ease-in-out infinite -2.5s;
+}
+
+.sl3 {
+  background-image:
+    radial-gradient(1px 1px at 4% 30%, rgba(255, 255, 255, 0.5), transparent 60%),
+    radial-gradient(1px 1px at 62% 28%, rgba(255, 255, 255, 0.6), transparent 60%),
+    radial-gradient(1px 1px at 48% 48%, rgba(255, 255, 255, 0.55), transparent 60%),
+    radial-gradient(1px 1px at 92% 50%, rgba(255, 255, 255, 0.65), transparent 60%),
+    radial-gradient(1px 1px at 8% 56%, rgba(255, 255, 255, 0.45), transparent 60%);
+  animation: twinkleC 12s ease-in-out infinite -6s;
+}
+
+@keyframes twinkleA {
+  0%, 100% { opacity: 0.62; }
+  50% { opacity: 1; }
+}
+@keyframes twinkleB {
+  0%, 100% { opacity: 1; }
+  40% { opacity: 0.5; }
+  70% { opacity: 0.85; }
+}
+@keyframes twinkleC {
+  0%, 100% { opacity: 0.8; }
+  30% { opacity: 1; }
+  60% { opacity: 0.45; }
+}
+
+/* a handful of stars that flare on their own rhythm (placed by script) */
+.spark {
+  position: absolute;
+  border-radius: 50%;
+  background: #fffaf0;
+  opacity: 0.3;
+  animation: sparkle var(--spark-time, 7s) ease-in-out infinite var(--spark-delay, 0s);
+}
+
+@keyframes sparkle {
+  0%, 72%, 100% { opacity: 0.22; box-shadow: none; transform: scale(1); }
+  84% { opacity: 1; box-shadow: 0 0 6px 1px rgba(255, 240, 215, 0.75); transform: scale(1.35); }
+}
+
+/* ---------- clouds, for the daylight hours ---------- */
+.clouds {
+  position: absolute;
+  inset: 0 0 35% 0;
+  /* a cloud still crossing when the sky turns simply fades out */
+  opacity: var(--cloud-visible, 0);
+  transition: opacity 2.4s ease;
+}
+
+.cloud {
+  position: absolute;
+  top: 18%;
+  left: 0;
+  width: clamp(110px, 17vw, 200px);
+  height: clamp(34px, 5vw, 58px);
+  opacity: 0;
+  filter: blur(9px);
+  will-change: transform;
+}
+.cloud.drifting {
+  animation: cloudDrift var(--drift-time, 120s) linear;
+}
+
+.puff {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 50%;
+}
+.p1 { left: 0;   bottom: 2%;  width: 48%; height: 62%; }
+.p2 { left: 22%; bottom: 14%; width: 56%; height: 96%; }
+.p3 { left: 56%; bottom: 0;   width: 46%; height: 66%; }
+.base { left: 3%; bottom: 0; width: 94%; height: 34%; border-radius: 40px; }
+
+@keyframes cloudDrift {
+  from { opacity: 0; transform: translate3d(-28vw, 0, 0); }
+  14%  { opacity: var(--cloud-opacity, 0.5); }
+  82%  { opacity: var(--cloud-opacity, 0.5); }
+  to   { opacity: 0; transform: translate3d(124vw, 0, 0); }
 }
 
 .sun {
   position: absolute;
-  bottom: 14%;
+  bottom: 12%;
   left: 50%;
   transform: translateX(-50%);
-  width: 220px;
-  height: 220px;
+  width: clamp(155px, 18vw, 205px);
+  aspect-ratio: 1;
   border-radius: 50%;
   background: radial-gradient(
     circle at center,
@@ -111,28 +228,26 @@ body {
   );
   filter: blur(0.5px);
   opacity: var(--sun-opacity, 1);
-  transition: opacity 2s ease;
   animation: sunBreathe 9s ease-in-out infinite;
 }
 
 .sun-glow {
   position: absolute;
-  bottom: 2%;
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 520px;
-  height: 520px;
+  width: clamp(320px, 46vw, 560px);
+  aspect-ratio: 1;
   border-radius: 50%;
   background: radial-gradient(
     circle at center,
-    rgba(255, 220, 160, 0.32) 0%,
-    rgba(255, 180, 130, 0.16) 25%,
-    rgba(255, 150, 110, 0.06) 45%,
+    rgba(255, 220, 160, 0.3) 0%,
+    rgba(255, 180, 130, 0.15) 25%,
+    rgba(255, 150, 110, 0.055) 45%,
     transparent 65%
   );
-  filter: blur(8px);
+  filter: blur(10px);
   opacity: var(--sun-glow-opacity, 1);
-  transition: opacity 2s ease;
   animation: sunBreathe 9s ease-in-out infinite;
 }
 
@@ -151,8 +266,7 @@ body {
   display: block;
 }
 .horizon path {
-  fill: var(--island);
-  opacity: 0.92;
+  fill: url(#islandFill);
 }
 
 .ocean {
@@ -166,7 +280,6 @@ body {
     var(--ocean-top) 0%,
     var(--ocean-bot) 100%
   );
-  transition: background 2s ease;
 }
 .ocean::before {
   content: "";
@@ -183,6 +296,85 @@ body {
   pointer-events: none;
 }
 
+/* ---------- birds drifting past now and then ---------- */
+.flock {
+  position: absolute;
+  top: 25%;
+  left: 0;
+  width: 118px;
+  height: 56px;
+  color: var(--bird);
+  opacity: 0;
+  will-change: transform;
+}
+.flock.flying {
+  animation: driftAcross var(--flight-time, 34s) linear;
+}
+.flock.reverse.flying {
+  animation-name: driftAcrossBack;
+}
+.flock.reverse .bird {
+  scale: -1 1;
+}
+
+.bird {
+  position: absolute;
+  display: block;
+}
+.bird svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+.bird .w {
+  transform-origin: 12px 7px;
+  animation: flapDown 0.9s ease-in-out infinite;
+}
+.bird .wr {
+  animation-name: flapUp;
+}
+
+/* a loose, uneven flock so it never reads as a pattern */
+.b1 { left: 0;    top: 20px; width: 16px; }
+.b2 { left: 25px; top: 3px;  width: 12px; }
+.b3 { left: 43px; top: 33px; width: 13px; }
+.b4 { left: 68px; top: 13px; width: 10px; }
+.b5 { left: 92px; top: 36px; width: 9px;  }
+
+.b1 .w { animation-duration: 0.95s; }
+.b2 .w { animation-duration: 0.78s; animation-delay: -0.35s; }
+.b3 .w { animation-duration: 1.08s; animation-delay: -0.6s; }
+.b4 .w { animation-duration: 0.84s; animation-delay: -0.15s; }
+.b5 .w { animation-duration: 1.15s; animation-delay: -0.8s; }
+
+@keyframes flapDown {
+  0%, 100% { transform: rotate(-15deg); }
+  50% { transform: rotate(17deg); }
+}
+@keyframes flapUp {
+  0%, 100% { transform: rotate(15deg); }
+  50% { transform: rotate(-17deg); }
+}
+
+@keyframes driftAcross {
+  from { opacity: 0; transform: translate3d(-16vw, 0, 0); }
+  12%  { opacity: 0.8; }
+  35%  { transform: translate3d(21vw, -2.4vh, 0); }
+  65%  { transform: translate3d(57vw, 1.6vh, 0); }
+  86%  { opacity: 0.8; }
+  to   { opacity: 0; transform: translate3d(114vw, -3vh, 0); }
+}
+
+@keyframes driftAcrossBack {
+  from { opacity: 0; transform: translate3d(114vw, 0, 0); }
+  12%  { opacity: 0.8; }
+  35%  { transform: translate3d(72vw, -2.4vh, 0); }
+  65%  { transform: translate3d(36vw, 1.6vh, 0); }
+  86%  { opacity: 0.8; }
+  to   { opacity: 0; transform: translate3d(-16vw, -3vh, 0); }
+}
+
 /* ---------- content ---------- */
 .content {
   position: relative;
@@ -194,8 +386,8 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 4rem 1.5rem 18vh;
-  animation: fadeUp 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  padding: 4rem 1.5rem clamp(7rem, 32vh, 18rem);
+  animation: fadeUp 1.6s var(--ease) both;
 }
 
 @keyframes fadeUp {
@@ -204,96 +396,121 @@ body {
 }
 
 .eyebrow {
-  font-size: 0.78rem;
-  letter-spacing: 0.32em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.7rem, 2vw, 1.1rem);
+  font-size: clamp(0.66rem, 1.1vw, 0.76rem);
+  letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 2.5rem;
-  opacity: 0.9;
+  margin-bottom: var(--space-md);
   font-weight: 400;
   text-shadow: 0 1px 4px var(--shadow);
-  transition: color 1.5s ease, text-shadow 1.5s ease;
+}
+.eyebrow::before,
+.eyebrow::after {
+  content: "";
+  flex: none;
+  width: clamp(18px, 5vw, 48px);
+  height: 1px;
+  background: currentColor;
+  opacity: 0.45;
+}
+
+/* a line may break at a dot, never inside a date or a time */
+.eyebrow-line {
+  display: inline;
+}
+.eyebrow .bit {
+  white-space: nowrap;
 }
 
 .headline {
   font-family: "Cormorant Garamond", Georgia, serif;
   font-weight: 300;
-  font-size: clamp(2.6rem, 7.5vw, 5.5rem);
-  line-height: 1.05;
-  margin-bottom: 3.5rem;
-  letter-spacing: -0.01em;
-  text-shadow:
-    0 2px 8px var(--shadow),
-    0 6px 30px var(--shadow);
-  transition: text-shadow 1.5s ease;
+  font-size: clamp(2.4rem, 6.8vw, 5rem);
+  line-height: 1.06;
+  margin-bottom: var(--space-lg);
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+  text-shadow: var(--lift);
 }
 
 .headline .name {
   display: block;
-  margin-top: 0.2em;
+  margin-top: 0.14em;
   font-style: italic;
   font-weight: 400;
   color: var(--accent);
-  font-size: 1.15em;
+  font-size: 1.16em;
+  letter-spacing: 0.005em;
 }
 
 .countdown {
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: clamp(0.6rem, 2vw, 1.4rem);
-  margin-bottom: 3rem;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.45rem, 1.3vw, 0.85rem);
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: var(--space-md);
 }
 
 .unit {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 64px;
+  padding: clamp(0.85rem, 2vw, 1.25rem) clamp(0.25rem, 1.2vw, 0.75rem);
+  border-radius: clamp(12px, 1.6vw, 18px);
+  background: var(--panel);
+  border: 1px solid var(--hairline);
+  -webkit-backdrop-filter: blur(7px) saturate(1.08);
+  backdrop-filter: blur(7px) saturate(1.08);
 }
 
 .value {
   font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: clamp(2.6rem, 6.5vw, 4.5rem);
+  font-size: clamp(2rem, 5.2vw, 3.4rem);
   font-weight: 300;
   font-variant-numeric: tabular-nums;
   line-height: 1;
-  letter-spacing: 0.02em;
-  text-shadow:
-    0 1px 2px var(--shadow),
-    0 4px 14px var(--shadow),
-    0 0 28px var(--shadow);
-  transition: text-shadow 1.5s ease;
+  letter-spacing: 0.01em;
+  text-shadow: 0 1px 3px var(--shadow);
 }
 
 .label {
-  font-size: 0.7rem;
-  letter-spacing: 0.28em;
+  font-size: clamp(0.58rem, 0.95vw, 0.66rem);
+  letter-spacing: 0.24em;
   text-transform: uppercase;
-  margin-top: 0.7rem;
-  opacity: 0.9;
+  margin-top: 0.75rem;
+  opacity: 0.72;
   font-weight: 400;
-  text-shadow: 0 1px 4px var(--shadow);
-  transition: text-shadow 1.5s ease;
 }
 
-.sep {
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: clamp(2rem, 5vw, 3rem);
-  opacity: 0.4;
-  font-weight: 300;
-  align-self: flex-start;
-  margin-top: 0.4em;
-}
+/* the dividers are carried by the plates now */
+.sep { display: none; }
 
 .footnote {
+  position: relative;
+  isolation: isolate;
   font-family: "Cormorant Garamond", Georgia, serif;
   font-style: italic;
-  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
-  opacity: 0.78;
+  font-size: clamp(1rem, 1.7vw, 1.25rem);
+  opacity: 0.85;
   font-weight: 300;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.015em;
+  text-wrap: balance;
+  text-shadow: 0 1px 6px var(--shadow);
+}
+
+/* the line can drift over the sun — give it a halo that follows the phase */
+.footnote::before {
+  content: "";
+  position: absolute;
+  inset: -0.9em -2.4em;
+  z-index: -1;
+  background: radial-gradient(ellipse at center, var(--scrim) 0%, transparent 72%);
+  filter: blur(7px);
 }
 
 /* ---------- audio toggle ---------- */
@@ -302,11 +519,11 @@ body {
   top: 1.25rem;
   right: 1.25rem;
   z-index: 10;
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 245, 230, 0.28);
-  background: rgba(20, 8, 24, 0.42);
+  border: 1px solid var(--hairline);
+  background: var(--panel);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   color: var(--text);
@@ -314,8 +531,8 @@ body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  opacity: 0.55;
-  transition: opacity 0.3s ease, transform 0.2s ease, background 0.2s ease;
+  opacity: 0.6;
+  transition: opacity 0.3s ease, transform 0.2s var(--ease);
   padding: 0;
 }
 .audio-toggle:hover { opacity: 1; transform: scale(1.06); }
@@ -324,9 +541,9 @@ body {
   outline-offset: 3px;
 }
 .audio-toggle:disabled { opacity: 0.25; cursor: default; }
-.audio-toggle .icon { width: 18px; height: 18px; display: block; }
+.audio-toggle .icon { width: 17px; height: 17px; display: block; }
 .audio-toggle .icon-pause { display: none; }
-.audio-toggle.playing { opacity: 0.9; }
+.audio-toggle.playing { opacity: 0.92; }
 .audio-toggle.playing .icon-play { display: none; }
 .audio-toggle.playing .icon-pause { display: block; }
 
@@ -334,7 +551,7 @@ body {
   position: absolute;
   inset: -2px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 228, 184, 0.5);
+  border: 1px solid var(--accent);
   opacity: 0;
   pointer-events: none;
 }
@@ -342,7 +559,7 @@ body {
   animation: audioPulse 2.6s ease-out infinite;
 }
 @keyframes audioPulse {
-  0% { opacity: 0.65; transform: scale(0.95); }
+  0% { opacity: 0.55; transform: scale(0.95); }
   80% { opacity: 0; transform: scale(1.5); }
   100% { opacity: 0; transform: scale(1.5); }
 }
@@ -360,61 +577,34 @@ body {
 
 /* ---------- responsive ---------- */
 @media (max-width: 760px) {
-  .sun {
-    width: 170px;
-    height: 170px;
-  }
-  .sun-glow {
-    width: 380px;
-    height: 380px;
-  }
   .horizon {
     height: 14vh;
     min-height: 100px;
   }
 }
 
-@media (max-width: 520px) {
-  .sep { display: none; }
+@media (max-width: 560px) {
   .countdown {
-    gap: 1rem 1.4rem;
-    max-width: 320px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+    max-width: 330px;
   }
-  .unit { min-width: 70px; }
   .content {
-    padding: 3rem 1.25rem 16vh;
+    padding: 3rem 1.25rem clamp(5.5rem, 26vh, 12rem);
   }
   .eyebrow {
-    font-size: 0.7rem;
-    letter-spacing: 0.25em;
-    margin-bottom: 1.75rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    margin-bottom: var(--space-sm);
   }
-  .headline {
-    margin-bottom: 2.5rem;
-  }
-  .sun {
-    width: 140px;
-    height: 140px;
-    bottom: 16%;
-  }
-  .sun-glow {
-    width: 300px;
-    height: 300px;
-    bottom: 4%;
-  }
-  .audio-toggle {
-    top: 1rem;
-    right: 1rem;
-    width: 44px;
-    height: 44px;
-  }
+  .eyebrow::before,
+  .eyebrow::after { display: none; }
+  .sun { bottom: 14%; }
 }
 
 @media (max-width: 360px) {
-  .sun { width: 120px; height: 120px; }
-  .sun-glow { width: 260px; height: 260px; }
-  .countdown { gap: 0.75rem 1rem; max-width: 280px; }
-  .unit { min-width: 60px; }
+  .countdown { max-width: 290px; }
+  .value { font-size: 2.1rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -422,7 +612,15 @@ body {
   .sun,
   .sun-glow,
   .content,
-  .audio-pulse {
+  .audio-pulse,
+  .flock,
+  .bird .w,
+  .star-layer,
+  .spark,
+  .cloud {
     animation: none !important;
   }
+  .flock,
+  .clouds { display: none; }
+  html { transition: none; }
 }
