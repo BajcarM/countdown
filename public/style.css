@@ -281,6 +281,7 @@ body {
     var(--ocean-bot) 100%
   );
 }
+/* the shoreline, breathing slowly */
 .ocean::before {
   content: "";
   position: absolute;
@@ -294,6 +295,54 @@ body {
     transparent 100%
   );
   pointer-events: none;
+  animation: shore 7.5s ease-in-out infinite;
+}
+
+@keyframes shore {
+  0%, 100% { opacity: 0.72; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(1.16); }
+}
+
+/* swell creeping toward the shore */
+.ripples {
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06) 0 1px,
+    transparent 1px 9px
+  );
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 78%);
+  mask-image: linear-gradient(180deg, #000 0%, transparent 78%);
+  animation: swell 9s linear infinite;
+}
+
+@keyframes swell {
+  from { background-position-y: 0; }
+  to { background-position-y: 9px; }
+}
+
+/* the sun's path across the water */
+.glint {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: clamp(64px, 11vw, 140px);
+  transform: translateX(-50%);
+  background: linear-gradient(
+    180deg,
+    var(--ocean-shimmer) 0%,
+    transparent 88%
+  );
+  filter: blur(7px);
+  opacity: var(--sun-glow-opacity, 1);
+  animation: glint 7s ease-in-out infinite;
+}
+
+@keyframes glint {
+  0%, 100% { transform: translateX(-50%) scaleX(1); }
+  50% { transform: translateX(-52%) scaleX(1.22); }
 }
 
 /* ---------- birds drifting past now and then ---------- */
@@ -618,7 +667,10 @@ body {
   .bird .w,
   .star-layer,
   .spark,
-  .cloud {
+  .cloud,
+  .ripples,
+  .glint,
+  .ocean::before {
     animation: none !important;
   }
   .flock,

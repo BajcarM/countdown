@@ -12,10 +12,16 @@ const els = {
 
 const pad = (n) => String(n).padStart(2, "0");
 
+// the dev panel (see dev.js, loaded only with ?dev) drives these two
+let phaseOverride = null;
+let forceArrival = false;
+const ORIGINAL_HEADLINE = els.headline.innerHTML;
+const ORIGINAL_FOOTNOTE = els.footnote.textContent;
+
 function tick() {
   const diff = TARGET - Date.now();
 
-  if (diff <= 0) {
+  if (forceArrival || diff <= 0) {
     els.days.textContent = "00";
     els.hours.textContent = "00";
     els.minutes.textContent = "00";
@@ -123,7 +129,7 @@ function getPhase(date) {
 }
 
 function applySky() {
-  const phase = getPhase(new Date());
+  const phase = phaseOverride || getPhase(new Date());
   const p = palettes[phase];
   const root = document.documentElement.style;
   p.sky.forEach((c, i) => root.setProperty(`--sky-${i + 1}`, c));
@@ -153,10 +159,11 @@ const prefersCalm = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 const rand = (min, max) => min + Math.random() * (max - min);
 
-function sendFlock() {
+function sendFlock(force = false) {
   // no birds while it is dark, and none while the tab is hidden
   const resting = document.body.dataset.phase === "night" || document.hidden;
-  if (!flock || prefersCalm.matches || resting) return scheduleFlock();
+  if (!flock) return;
+  if (!force && (prefersCalm.matches || resting)) return scheduleFlock();
 
   flock.classList.remove("flying", "reverse");
   void flock.offsetWidth; // restart the animation cleanly
@@ -201,9 +208,9 @@ if (starsEl && !prefersCalm.matches) {
 // ---------- clouds, only while it is light out ----------
 const DAYLIGHT = new Set(["morning", "midday", "afternoon"]);
 
-function sendCloud(cloud) {
+function sendCloud(cloud, force = false) {
   const daytime = DAYLIGHT.has(document.body.dataset.phase) && !document.hidden;
-  if (prefersCalm.matches || !daytime) return scheduleCloud(cloud);
+  if (!force && (prefersCalm.matches || !daytime)) return scheduleCloud(cloud);
 
   cloud.classList.remove("drifting");
   void cloud.offsetWidth;
