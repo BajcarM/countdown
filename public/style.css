@@ -301,8 +301,8 @@ body {
   position: absolute;
   top: 25%;
   left: 0;
-  width: 118px;
-  height: 56px;
+  width: 110px;
+  height: 54px;
   color: var(--bird);
   opacity: 0;
   will-change: transform;
@@ -324,6 +324,7 @@ body {
 .bird svg {
   width: 100%;
   height: auto;
+  max-width: 20px;
   display: block;
   overflow: visible;
 }
@@ -336,11 +337,11 @@ body {
 }
 
 /* a loose, uneven flock so it never reads as a pattern */
-.b1 { left: 0;    top: 20px; width: 16px; }
-.b2 { left: 25px; top: 3px;  width: 12px; }
-.b3 { left: 43px; top: 33px; width: 13px; }
-.b4 { left: 68px; top: 13px; width: 10px; }
-.b5 { left: 92px; top: 36px; width: 9px;  }
+.b1 { left: 0;    top: 20px; width: 14px; }
+.b2 { left: 25px; top: 3px;  width: 11px; }
+.b3 { left: 43px; top: 33px; width: 12px; }
+.b4 { left: 68px; top: 13px; width: 9px;  }
+.b5 { left: 88px; top: 36px; width: 8px;  }
 
 .b1 .w { animation-duration: 0.95s; }
 .b2 .w { animation-duration: 0.78s; animation-delay: -0.35s; }
