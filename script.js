@@ -1,5 +1,5 @@
-// Wed 16 Sep 2026, 22:20 Canary Islands time (WEST = UTC+1 in September)
-const TARGET = new Date("2026-09-16T22:20:00+01:00").getTime();
+// Sat 28 Nov 2026, 18:35 Canary Islands time (WET = UTC+0 in November)
+const TARGET = new Date("2026-11-28T18:35:00+00:00").getTime();
 
 const els = {
   days: document.getElementById("days"),
